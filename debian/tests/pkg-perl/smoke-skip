@@ -1,0 +1,7 @@
+# need files we remove during repackaging
+t/01basic.t
+t/49_load_html.t
+t/19die_on_invalid_utf8_rt_58848.t
+t/60error_prev_chain.t
+# author test, needs POD files not preset during autopkgtest
+t/pod-files-presence.t

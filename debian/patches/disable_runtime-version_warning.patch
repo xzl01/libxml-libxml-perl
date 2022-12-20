@@ -1,0 +1,34 @@
+Description: disable the runtime libxml2 version check
+Origin: vendor
+Bug: https://rt.cpan.org/Public/Bug/Display.html?id=104156
+Bug-Debian: https://bugs.debian.org/783610
+Author: gregor herrmann <gregoa@debian.org>
+Last-Update: 2015-08-26
+
+--- a/LibXML.pm
++++ b/LibXML.pm
+@@ -220,13 +220,17 @@
+ #-------------------------------------------------------------------------#
+ # test exact version (up to patch-level)                                  #
+ #-------------------------------------------------------------------------#
+-{
+-  my ($runtime_version) = LIBXML_RUNTIME_VERSION() =~ /^(\d+)/;
+-  if ( $runtime_version < LIBXML_VERSION ) {
+-    warn "Warning: XML::LibXML compiled against libxml2 ".LIBXML_VERSION.
+-      ", but runtime libxml2 is older $runtime_version\n";
+-  }
+-}
++#
++# disabled in Debian; cf. https://bugs.debian.org/783610 and
++# https://rt.cpan.org/Public/Bug/Display.html?id=104156
++#
++#{
++#  my ($runtime_version) = LIBXML_RUNTIME_VERSION() =~ /^(\d+)/;
++#  if ( $runtime_version < LIBXML_VERSION ) {
++#    warn "Warning: XML::LibXML compiled against libxml2 ".LIBXML_VERSION.
++#      ", but runtime libxml2 is older $runtime_version\n";
++#  }
++#}
+ 
+ 
+ #-------------------------------------------------------------------------#

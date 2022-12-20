@@ -1,0 +1,26 @@
+#!/usr/bin/make -f
+
+# skip tests that need files we remove in the +dfsg version
+SKIP_TESTS = $(shell cat debian/tests/pkg-perl/smoke-skip)
+TEST_FILES = $(filter-out $(SKIP_TESTS), $(wildcard t/*.t))
+
+XML_LIBS := $(shell pkg-config --libs   libxml-2.0)
+XML_INC  := $(shell pkg-config --cflags libxml-2.0)
+
+export DEB_BUILD_MAINT_OPTIONS = hardening=+bindnow
+
+%:
+	dh $@
+
+# we want to use the system version of included modules, so
+# we move the inc away and move it back afterwards
+override_dh_auto_clean:
+	dh_auto_clean
+	[ ! -d $(CURDIR)/inc.save ] || mv $(CURDIR)/inc.save $(CURDIR)/inc
+
+override_dh_auto_configure:
+	[ ! -d $(CURDIR)/inc ] || mv $(CURDIR)/inc $(CURDIR)/inc.save
+	dh_auto_configure -- SKIP_SAX_INSTALL=1 LIBS="$(XML_LIBS)" INC="$(XML_INC)"
+
+override_dh_auto_test:
+	dh_auto_test -- TEST_FILES="$(TEST_FILES)"

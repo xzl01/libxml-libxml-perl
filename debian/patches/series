@@ -1,0 +1,3 @@
+fail-build-no-libxml2.patch
+disable_runtime-version_warning.patch
+test_against_runtime-version.patch

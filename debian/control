@@ -1,0 +1,35 @@
+Source: libxml-libxml-perl
+Maintainer: Debian Perl Group <pkg-perl-maintainers@lists.alioth.debian.org>
+Uploaders: gregor herrmann <gregoa@debian.org>,
+           Nick Morrott <knowledgejunkie@gmail.com>
+Section: perl
+Testsuite: autopkgtest-pkg-perl
+Priority: optional
+Build-Depends: debhelper-compat (= 12),
+               libdevel-checklib-perl,
+               libxml-namespacesupport-perl <!nocheck>,
+               libxml-sax-perl <!nocheck>,
+               libxml2-dev,
+               perl-xs-dev,
+               perl:native,
+               pkg-config,
+               zlib1g-dev
+Standards-Version: 4.5.0
+Vcs-Browser: https://salsa.debian.org/perl-team/modules/packages/libxml-libxml-perl
+Vcs-Git: https://salsa.debian.org/perl-team/modules/packages/libxml-libxml-perl.git
+Homepage: https://metacpan.org/release/XML-LibXML
+Rules-Requires-Root: no
+
+Package: libxml-libxml-perl
+Architecture: any
+Depends: ${misc:Depends},
+         ${perl:Depends},
+         ${shlibs:Depends},
+         libxml-namespacesupport-perl,
+         libxml-sax-perl
+Description: Perl interface to the libxml2 library
+ XML::LibXML is a Perl interface to the GNOME libxml2 library, which provides
+ interfaces for parsing and manipulating XML files. This module allows Perl
+ programmers to make use of the highly capable validating XML parser and the
+ high performance Document Object Model (DOM) implementation. Additionally, it
+ supports using the XML Path Language (XPath) to find and extract information.

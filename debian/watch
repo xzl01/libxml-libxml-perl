@@ -1,0 +1,3 @@
+version=4
+options=dversionmangle=s/\+dfsg//,repacksuffix=+dfsg \
+https://metacpan.org/release/XML-LibXML .*/XML-LibXML-v?@ANY_VERSION@@ARCHIVE_EXT@$

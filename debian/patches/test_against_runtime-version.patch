@@ -1,0 +1,18 @@
+Description: check the runtime version of libxml2 not the one the package was built against
+ Doesn't make a difference at build time, but e.g. for later run autopkgtests.
+Origin: vendor
+Forwarded: not-needed
+Author: gregor herrmann <gregoa@debian.org>
+Last-Update: 2020-02-28
+
+--- a/t/48_reader_undef_warning_on_empty_str_rt106830.t
++++ b/t/48_reader_undef_warning_on_empty_str_rt106830.t
+@@ -32,7 +32,7 @@
+     # TEST
+     SKIP:
+     {
+-        if (XML::LibXML::LIBXML_VERSION() >= 20905)
++        if (XML::LibXML::LIBXML_RUNTIME_VERSION() >= 20905)
+         {
+             skip 'libxml2 accepts empty strings since 2.9.5 version', 1;
+         }
