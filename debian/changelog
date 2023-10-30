@@ -1,8 +1,41 @@
-libxml-libxml-perl (2.0134+dfsg-deepin1) unstable; urgency=medium
+libxml-libxml-perl (2.0207+dfsg+really+2.0134-1) unstable; urgency=medium
 
-  * Rebuild
+  * Team upload
 
- -- Deepin Packages Builder <packages@deepin.org>  Fri, 11 Nov 2022 18:00:35 +0800
+  [ Helmut Grohne ]
+  * Fix FTCBFS: Use the host architecture pkg-config (Closes: #1003761)
+
+  [ Yadd ]
+  * Add lintian overrides
+
+  [ Niko Tyni]
+  * Temporarily revert to upstream version 2.0134 while changes
+    in external DTD handling are revisited upstream. Thanks to
+    Vincent Lefevre for the reports. (Closes: #1005281, #1003810)
+
+ -- Niko Tyni <ntyni@debian.org>  Fri, 11 Feb 2022 21:29:49 +0200
+
+libxml-libxml-perl (2.0207+dfsg-1) unstable; urgency=medium
+
+  [ gregor herrmann ]
+  * Update 'DEB_BUILD_MAINT_OPTIONS = hardening=+bindnow' to '=+all'.
+
+  [ Jenkins ]
+  * Bump debhelper from old 12 to 13.
+  * Update standards version to 4.5.1, no changes needed.
+
+  [ gregor herrmann ]
+  * Import upstream version 2.0207+dfsg.
+  * Devel::CheckLib is removed, delete references in debian/*.
+  * Drop fail-build-no-libxml2.patch, not applicable anymore.
+  * Add new patch to avoid new Alien::* build dependencies.
+  * debian/rules: move SKIP_SAX_INSTALL.
+    It's not an ExtUtils::MakeMaker parameter but an environment variable for
+    Makefile.PL.
+  * Update years of packaging copyright.
+  * Declare compliance with Debian Policy 4.6.0.
+
+ -- gregor herrmann <gregoa@debian.org>  Fri, 14 Jan 2022 22:46:30 +0100
 
 libxml-libxml-perl (2.0134+dfsg-2) unstable; urgency=medium
 
