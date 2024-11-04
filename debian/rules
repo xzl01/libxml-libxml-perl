@@ -9,6 +9,18 @@ TEST_FILES = $(filter-out $(SKIP_TESTS), $(wildcard t/*.t))
 XML_LIBS := $(shell $(PKG_CONFIG) --libs   libxml-2.0)
 XML_INC  := $(shell $(PKG_CONFIG) --cflags libxml-2.0)
 
+XML_VER           := $(shell $(PKG_CONFIG) --modversion libxml-2.0)
+XML_VER_MAJOR      = $(shell echo $(XML_VER) | cut -f 1 -d .)
+XML_VER_MINOR      = $(shell echo $(XML_VER) | cut -f 2 -d .)
+XML_VER_CUR        = $(XML_VER_MAJOR).$(XML_VER_MINOR)
+XML_VER_NEXT       = $(XML_VER_MAJOR).$(shell expr $(XML_VER_MINOR) + 1)
+XML_VER_DEBIAN     = $(shell dpkg-query -Wf '$${source:Version}' libxml2-dev)
+ifeq (,$(findstring +really,$(XML_VER_DEBIAN)))
+XML_VER_SUBST      = -Vlibxml:Depends="libxml2 (>= $(XML_VER_CUR)), libxml2 (<< $(XML_VER_NEXT)~)"
+else
+XML_VER_SUBST      = -Vlibxml:Depends="libxml2 (>= $(XML_VER_DEBIAN))"
+endif
+
 export DEB_BUILD_MAINT_OPTIONS = hardening=+all
 
 %:
@@ -26,3 +38,6 @@ override_dh_auto_configure:
 
 override_dh_auto_test:
 	dh_auto_test -- TEST_FILES="$(TEST_FILES)"
+
+override_dh_gencontrol:
+	dh_gencontrol -- $(XML_VER_SUBST)

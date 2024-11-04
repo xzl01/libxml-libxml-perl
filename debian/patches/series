@@ -1,3 +1,6 @@
 fail-build-no-libxml2.patch
 disable_runtime-version_warning.patch
 test_against_runtime-version.patch
+0001-t-35huge_mode.t-fix-test-with-libxml2-2.11.patch
+0001-initialize-xmlValidCtxt.patch
+0001-libxml-mm-Fix-function-prototypes-in-function-pointe.patch

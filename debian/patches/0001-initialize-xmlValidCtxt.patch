@@ -1,0 +1,62 @@
+From 5a6c6afdf1d87cb13699064647cfb24cc9131fe5 Mon Sep 17 00:00:00 2001
+From: Alexander Bluhm <alexander.bluhm@gmx.net>
+Date: Mon, 21 Nov 2022 18:37:25 +0100
+Subject: [PATCH] initialize xmlValidCtxt
+
+The variable cvp is stored on the stack and is uninitialized.  So
+the field ctxt->flags in valid.c xmlIsStreaming() contains random
+data.  The logic of xmlIsStreaming() can do an invalid cast and
+pointer dereference pctxt->parseMode and may crash there.  Use
+memset() to pass correct zero flags in xmlValidCtxt cvp variable
+down to xmlValidateDocument().
+---
+ LibXML.xs | 17 ++---------------
+ 1 file changed, 2 insertions(+), 15 deletions(-)
+
+Bug-Debian: https://bugs.debian.org/1072012
+
+diff --git a/LibXML.xs b/LibXML.xs
+index 70bb24e..b5b0b95 100644
+--- a/LibXML.xs
++++ b/LibXML.xs
+@@ -4025,18 +4025,11 @@ is_valid(self, ...)
+     CODE:
+         INIT_ERROR_HANDLER;
+ 
++        memset(&cvp, 0, sizeof(cvp));
+         cvp.userData = saved_error;
+         cvp.error = (xmlValidityErrorFunc)LibXML_validity_error_ctx;
+         cvp.warning = (xmlValidityWarningFunc)LibXML_validity_warning_ctx;
+ 
+-        /* we need to initialize the node stack, because perl might
+-         * already have messed it up.
+-         */
+-        cvp.nodeNr = 0;
+-        cvp.nodeTab = NULL;
+-        cvp.vstateNr = 0;
+-        cvp.vstateTab = NULL;
+-
+         PmmClearPSVI(self);
+         PmmInvalidatePSVI(self);
+         if (items > 1) {
+@@ -4065,16 +4058,10 @@ validate(self, ...)
+     CODE:
+         INIT_ERROR_HANDLER;
+ 
++        memset(&cvp, 0, sizeof(cvp));
+         cvp.userData = saved_error;
+         cvp.error = (xmlValidityErrorFunc)LibXML_validity_error_ctx;
+         cvp.warning = (xmlValidityWarningFunc)LibXML_validity_warning_ctx;
+-        /* we need to initialize the node stack, because perl might
+-         * already have messed it up.
+-         */
+-        cvp.nodeNr = 0;
+-        cvp.nodeTab = NULL;
+-        cvp.vstateNr = 0;
+-        cvp.vstateTab = NULL;
+ 
+         PmmClearPSVI(self);
+         PmmInvalidatePSVI(self);
+-- 
+2.43.0
+
